@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="15dp"
+    android:layout_marginVertical="5dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:background="@android:color/white">
+
+        <!-- Header Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AC Repairing Services"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textSize="15sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tvId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID: #1029390290"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textSize="11sp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/textThirdtinary"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Disetujui"
+                android:fontFamily="@font/poppins_semibold"
+                android:background="@drawable/bg_approved"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="14dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Category and Priority Badges -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_category_badge"
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="10dp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/tvCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Infrastruktur"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="10sp"
+                    android:textColor="#5E35B1"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="0dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_priority_badge"
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="10dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvPriority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tinggi"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="10sp"
+                    android:textColor="#E53935"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/tvDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kisah sukses Desa Wunut, Klaten, yang menjadi mandiri dan mampu menghasilkan pendapatan asli desa miliaran rupiah dari pengelolaan wisata Umbul Pelem berkat Dana Desa."
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="11sp"
+            android:lineSpacingExtra="2dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_text_complaint"
+            android:padding="8dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textColor="@color/textSecondary"/>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginVertical="12dp"/>
+
+        <!-- Footer Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvFullname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ahmed Show Room"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/primary"
+                        android:textSize="11sp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="pandoetria"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/textThirdtinary"
+                    android:layout_marginTop="2dp"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="end">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/ic_calendar"
+                        android:tint="@color/textThirdtinary"/>
+
+                    <TextView
+                        android:id="@+id/tvCreateAt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="09 Okt 2025"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="@color/textThirdtinary"
+                        android:layout_marginStart="4dp"
+                        android:textSize="10sp"/>
+
+                    <TextView
+                        android:id="@+id/tvDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(13 Hari)"
+                        android:fontFamily="@font/poppins_bold"
+                        android:layout_marginStart="4dp"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/ic_update"
+                        android:tint="@color/textThirdtinary"/>
+
+                    <TextView
+                        android:id="@+id/tvUpdateAt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Diperbarui: 09 Okt 2025"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="@color/textThirdtinary"
+                        android:layout_marginStart="4dp"
+                        android:textSize="10sp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

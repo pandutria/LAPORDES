@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "114629494014",
+    "project_id": "lapordes-da1b3",
+    "storage_bucket": "lapordes-da1b3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114629494014:android:2cfe5ad6907f50691551af",
+        "android_client_info": {
+          "package_name": "com.example.lapordes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEHXFsRV5t_gp0BsxzHJcjW6Gpy6_1qdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
