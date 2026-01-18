@@ -54,6 +54,7 @@ class RegisterFragment : Fragment() {
                     ToastHelper.showToast(requireContext(), "Berhasil membuat akun!")
                 }
                 is ResultState.Error -> {
+                    if (!isAdded) return@observe
                     binding.pbLoading.visibility = View.GONE
                     binding.btnRegister.visibility = View.VISIBLE
                     binding.tvLogin.isEnabled = true

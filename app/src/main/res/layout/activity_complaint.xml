@@ -26,6 +26,7 @@
             android:textSize="14sp" />
 
         <ImageView
+            android:id="@+id/btnBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
@@ -335,11 +336,11 @@
                 app:cardElevation="2dp">
 
 
-                <fragment
-                    android:id="@+id/mapFragment"
-                    android:name="com.google.android.gms.maps.SupportMapFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+<!--                <fragment-->
+<!--                    android:id="@+id/mapFragment"-->
+<!--                    android:name="com.google.android.gms.maps.SupportMapFragment"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent" />-->
 
 
             </com.google.android.material.card.MaterialCardView>
@@ -421,6 +422,7 @@
 
 
                 <ImageView
+                    android:id="@+id/imgImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
