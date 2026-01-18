@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/homeScreen"
-        android:name="com.example.lapordes.presentation.customer.user.home.HomeFragment"
+        android:name="com.example.lapordes.presentation.customer.home.HomeFragment"
         tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/notificationScreen"
-        android:name="com.example.lapordes.presentation.customer.user.notification.NotificationFragment"
+        android:name="com.example.lapordes.presentation.customer.notification.NotificationFragment"
         tools:layout="@layout/fragment_notification"/>
 
     <fragment
         android:id="@+id/profileScreen"
-        android:name="com.example.lapordes.presentation.customer.user.profile.ProfileFragment"
+        android:name="com.example.lapordes.presentation.customer.profile.ProfileFragment"
         tools:layout="@layout/fragment_profile"/>
 
 </navigation>

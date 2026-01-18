@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.lapordes"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.lapordes"
@@ -42,6 +42,9 @@ android {
 dependencies {
     implementation ("androidx.navigation:navigation-fragment:2.9.6")
     implementation ("androidx.navigation:navigation-ui:2.9.6")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -50,6 +53,11 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore)
+    implementation(libs.play.services.maps)
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

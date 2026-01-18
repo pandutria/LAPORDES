@@ -96,27 +96,29 @@
     </LinearLayout>
 
     <ProgressBar
+        android:fitsSystemWindows="true"
         android:id="@+id/progressBar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:indeterminateTint="@color/primary"
+        android:indeterminateTint="@color/secondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="60dp"/>
 
     <TextView
+        android:fitsSystemWindows="true"
         android:id="@+id/versionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Version 1.0.0"
         android:fontFamily="@font/poppins_regular"
-        android:textColor="@color/primary"
+        android:textColor="@color/secondary"
         android:textSize="10sp"
         android:alpha="0.6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="34dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
