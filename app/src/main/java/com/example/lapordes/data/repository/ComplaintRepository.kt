@@ -1,14 +1,10 @@
 package com.example.lapordes.data.repository
 
 import android.content.Context
-import com.bumptech.glide.Priority
 import com.example.lapordes.data.local.UserPref
-import com.example.lapordes.data.model.Complaint
-import com.example.lapordes.data.model.User
 import com.example.lapordes.data.state.ResultState
 import com.example.lapordes.utils.FirebaseHelper
 import java.util.UUID
-import kotlin.random.Random
 
 class ComplaintRepository {
     private val firestore = FirebaseHelper.firestore()
@@ -19,8 +15,8 @@ class ComplaintRepository {
         priority: String,
         description: String,
         imageUrl: String,
-        lat: String,
-        lng: String,
+        lat: Double,
+        lng: Double,
         context: Context,
         callback: (ResultState<String>) -> Unit
     ) {

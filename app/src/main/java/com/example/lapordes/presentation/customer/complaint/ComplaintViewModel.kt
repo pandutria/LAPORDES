@@ -19,8 +19,8 @@ class ComplaintViewModel: ViewModel() {
         priority: String,
         description: String,
         imageUrl: String,
-        lat: String,
-        lng: String,
+        lat: Double,
+        lng: Double,
         context: Context,
     ){
         repository.create(title, category, priority, description, imageUrl, lat, lng, context) {

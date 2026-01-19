@@ -48,6 +48,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:5.0.5")
     implementation("com.cloudinary:cloudinary-android:2.5.0")
 
+    implementation(libs.play.services.location)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

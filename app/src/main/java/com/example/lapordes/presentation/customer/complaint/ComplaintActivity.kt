@@ -18,8 +18,12 @@ import com.bumptech.glide.Glide
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.UploadCallback
 import com.example.lapordes.R
+import com.example.lapordes.data.state.ResultState
 import com.example.lapordes.databinding.ActivityComplaintBinding
 import com.example.lapordes.utils.IntentHelper
+import com.example.lapordes.utils.ToastHelper
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import java.io.File
 import java.io.FileOutputStream
 
@@ -29,10 +33,14 @@ class ComplaintActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ComplaintViewModel
 
-    var imageUri: String? = null
-    var imageUrl: String? = null
+    private var imageUri: String? = null
+    private var imageUrl: String? = null
+    private var myLat: Double? = null
+    private var myLng: Double? = null
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +88,7 @@ class ComplaintActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
                 if (isGranted) {
                     openImagePicker()
+                    getCurrentLocation()
                 }
                 else {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
@@ -93,6 +102,52 @@ class ComplaintActivity : AppCompatActivity() {
         binding.imageContainer.setOnClickListener {
             openImagePicker()
         }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        getCurrentLocation()
+
+        viewModel.createState.observe(this){state ->
+            when(state) {
+                is ResultState.Loading -> {
+                    binding.pbLoading.visibility = View.VISIBLE
+                    binding.btnSend.visibility = View.GONE
+                    binding.btnBack.isEnabled = false
+                }
+                is ResultState.Success -> {
+                    ToastHelper.showToast(this, "Berhasil membuat pengaduan!")
+                    IntentHelper.finish(this)
+                }
+                is ResultState.Error -> {
+                    binding.pbLoading.visibility = View.GONE
+                    binding.btnSend.visibility = View.VISIBLE
+                    binding.btnBack.isEnabled = true
+
+                    ToastHelper.showToast(this, state.message)
+                }
+            }
+        }
+    }
+
+    private fun getCurrentLocation() {
+        if (
+            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            != android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissionLauncher.launch(
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            return
+        }
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    myLat = location.latitude
+                    myLng = location.longitude
+                } else {
+                    Toast.makeText(this, "Lokasi tidak tersedia", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun uriToFile(uri: Uri): File {
@@ -159,9 +214,17 @@ class ComplaintActivity : AppCompatActivity() {
             .unsigned("outgamble")
             .callback(object : UploadCallback {
 
-                override fun onStart(requestId: String) {}
+                override fun onStart(requestId: String) {
+                    binding.pbLoading.visibility = View.VISIBLE
+                    binding.btnSend.visibility = View.GONE
+                    binding.btnBack.isEnabled = false
+                }
 
-                override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {}
+                override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                    binding.pbLoading.visibility = View.VISIBLE
+                    binding.btnSend.visibility = View.GONE
+                    binding.btnBack.isEnabled = false
+                }
 
                 override fun onSuccess(
                     requestId: String,
@@ -169,9 +232,15 @@ class ComplaintActivity : AppCompatActivity() {
                 ) {
                     val url = resultData["secure_url"] as String
                     imageUrl = url
-//                    val userId = UserIdPref(this@ReportsLocationActivity).get()
-//                    viewModel.create(imageUrl!!, binding.etLocation.text.toString(), binding.etDate.text.toString(), binding.etDesc.text.toString(), userId)
+//
+                    val title = binding.etTitle.text.toString()
+                    val category = binding.spinnerKategori.selectedItem.toString()
+                    val priority = binding.spinnerPriority.selectedItem.toString()
+                    val desc = binding.etDesc.text.toString()
+                    val lat = myLat
+                    val lng = myLng
 
+                    viewModel.create(title, category, priority, desc, url, lat!!, lng!!, this@ComplaintActivity)
                 }
 
                 override fun onError(
@@ -179,6 +248,9 @@ class ComplaintActivity : AppCompatActivity() {
                     error: com.cloudinary.android.callback.ErrorInfo
                 ) {
                     error(error.description)
+                    binding.pbLoading.visibility = View.GONE
+                    binding.btnSend.visibility = View.VISIBLE
+                    binding.btnBack.isEnabled = true
                 }
 
                 override fun onReschedule(requestId: String, error: com.cloudinary.android.callback.ErrorInfo) {}
