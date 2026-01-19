@@ -229,7 +229,6 @@
             app:cornerRadius="7dp"/>
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -267,6 +266,7 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/tvEmpty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tidak ada data"
@@ -276,12 +276,13 @@
                 android:textColor="@color/textThirdtinary"
                 android:textSize="10sp"/>
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPengaduan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
                 android:scrollbars="none"
                 tools:listitem="@layout/item_complaint"/>
 

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingVertical="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/empty_profile"/>
+
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Admin Dinas"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="12sp"
+                    android:textColor="@color/textSecondary"/>
+
+                <TextView
+                    android:id="@+id/tvRole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="• Admin"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textSize="10sp"
+                    android:textColor="@color/secondary"/>
+
+            </LinearLayout>
+
+            <!-- Comment Text -->
+            <TextView
+                android:id="@+id/tvComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Terima kasih atas laporannya. Kami sudah menindaklanjuti dan akan segera dilakukan perbaikan dalam 3 hari kedepan."
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="11sp"
+                android:lineSpacingExtra="2dp"
+                android:textColor="@color/textSecondary"/>
+
+            <!-- Time -->
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="2 jam yang lalu"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="10sp"
+                android:textColor="@color/textThirdtinary"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Divider (kecuali item terakhir) -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="42dp"
+        android:alpha="0.1"
+        android:background="@color/textSecondary"/>
+
+</LinearLayout>

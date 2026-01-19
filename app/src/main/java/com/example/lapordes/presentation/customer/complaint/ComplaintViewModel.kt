@@ -7,7 +7,7 @@ import com.example.lapordes.data.model.Complaint
 import com.example.lapordes.data.repository.ComplaintRepository
 import com.example.lapordes.data.state.ResultState
 
-class ComplaintViewModel: ViewModel() {
+class ComplaintViewModel(): ViewModel() {
     private val repository = ComplaintRepository()
 
     private val _createState = MutableLiveData<ResultState<String>>()

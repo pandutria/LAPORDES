@@ -41,7 +41,6 @@ class ComplaintActivity : AppCompatActivity() {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -87,7 +86,7 @@ class ComplaintActivity : AppCompatActivity() {
         requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
                 if (isGranted) {
-                    openImagePicker()
+//                    openImagePicker()
                     getCurrentLocation()
                 }
                 else {
@@ -105,6 +104,14 @@ class ComplaintActivity : AppCompatActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getCurrentLocation()
+
+        binding.btnSend.setOnClickListener {
+            if (imageUri == null || binding.etTitle.text.isEmpty() || binding.etDesc.text.isEmpty()) {
+                ToastHelper.showToast(this, "Semua input wajib di isi!")
+                return@setOnClickListener
+            }
+            uploadImage(imageUri!!)
+        }
 
         viewModel.createState.observe(this){state ->
             when(state) {
@@ -232,7 +239,7 @@ class ComplaintActivity : AppCompatActivity() {
                 ) {
                     val url = resultData["secure_url"] as String
                     imageUrl = url
-//
+
                     val title = binding.etTitle.text.toString()
                     val category = binding.spinnerKategori.selectedItem.toString()
                     val priority = binding.spinnerPriority.selectedItem.toString()

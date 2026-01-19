@@ -88,6 +88,4 @@ class MainActivity : AppCompatActivity() {
                 .start()
         }
     }
-
-
 }
