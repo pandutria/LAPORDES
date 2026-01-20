@@ -53,15 +53,15 @@ class LoginFragment : Fragment() {
                     binding.tvRegister.isEnabled = false
                 }
                 is ResultState.Success -> {
-                    if (state.data.isAdmin) {
+                    UserPref(requireContext()).save(state.data)
+                    if (state.data.isAdmin == "true") {
                         IntentHelper.navigate(requireActivity(), AdminMainActivity::class.java)
                     } else {
                         IntentHelper.navigate(requireActivity(), MainActivity::class.java)
                     }
 
-                    IntentHelper.finish(requireActivity())
-                    UserPref(requireContext()).save(state.data)
                     ToastHelper.showToast(requireContext(), "Berhasil masuk akun!")
+                    IntentHelper.finish(requireActivity())
                 }
                 is ResultState.Error -> {
                     if (!isAdded) return@observe

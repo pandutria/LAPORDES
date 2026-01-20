@@ -1,5 +1,6 @@
 package com.example.lapordes.data.repository
 
+import android.util.Log
 import com.example.lapordes.data.model.User
 import com.example.lapordes.data.state.ResultState
 import com.example.lapordes.utils.FirebaseHelper
@@ -14,7 +15,7 @@ class AuthRepository {
         email: String,
         password: String,
         callback: (ResultState<String>) -> Unit
-    ){
+    ) {
         callback(ResultState.Loading)
 
         try {
@@ -26,7 +27,7 @@ class AuthRepository {
                         "uid" to uid,
                         "email" to email,
                         "password" to password,
-                        "isAdmin" to false,
+                        "isAdmin" to "false",
                         "createdAt" to FieldValue.serverTimestamp()
                     )
 
@@ -52,43 +53,31 @@ class AuthRepository {
         email: String,
         password: String,
         callback: (ResultState<User>) -> Unit
-    ){
+    ) {
         callback(ResultState.Loading)
 
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener { result ->
-                val uid = result.user?.uid
-
-                if (uid == null) {
-                    callback(ResultState.Error("Pengguna tidak valid"))
+        firestore.collection("users")
+            .whereEqualTo("email", email)
+            .whereEqualTo("password", password)
+            .get()
+            .addOnSuccessListener { snap ->
+                if (snap.isEmpty) {
+                    callback(ResultState.Error("Data pengguna tidak ditemukan"))
                     return@addOnSuccessListener
                 }
 
-                firestore.collection("users")
-                    .document(uid)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        if (!document.exists()) {
-                            callback(ResultState.Error("Data pengguna tidak ditemukan"))
-                            return@addOnSuccessListener
-                        }
+                val document = snap.documents.firstOrNull()
+                val user = document?.toObject(User::class.java)
 
-                        val user = document.toObject(User::class.java)
-                        if (user == null) {
-                            callback(ResultState.Error("Gagal membaca data pengguna"))
-                            return@addOnSuccessListener
-                        }
+                if (user == null) {
+                    callback(ResultState.Error("Gagal membaca data pengguna"))
+                    return@addOnSuccessListener
+                }
 
-                        callback(ResultState.Success(user))
-                    }
-                    .addOnFailureListener {
-                        callback(ResultState.Error(it.message!!))
-                    }
-
+                callback(ResultState.Success(user))
             }
             .addOnFailureListener {
                 callback(ResultState.Error(it.message!!))
             }
-
     }
 }

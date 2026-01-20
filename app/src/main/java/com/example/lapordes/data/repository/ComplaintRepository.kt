@@ -65,8 +65,6 @@ class ComplaintRepository {
         callback(ResultState.Loading)
 
         try {
-            val user = UserPref(context).get()
-
             listener?.remove()
 
             firestore.collection("complaints")

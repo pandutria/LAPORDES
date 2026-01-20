@@ -93,10 +93,10 @@ class ComplaintDetailActivity : AppCompatActivity() {
             }
 
             dialogBinding.btnSubmit.setOnClickListener {
-                val commentText = dialogBinding.etComment.text.toString().trim()
+                val commentText = dialogBinding.etComment.text.toString()
 
                 if (commentText.isEmpty()) {
-                    Toast.makeText(this, "Komentar tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                    ToastHelper.showToast(this, "Komentar tidak boleh kosong")
                     return@setOnClickListener
                 }
 

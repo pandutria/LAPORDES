@@ -1,6 +1,7 @@
 package com.example.lapordes.presentation.splash
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -39,12 +40,12 @@ class SplashScreenActivity : AppCompatActivity() {
             delay(3000)
             val user = UserPref(this@SplashScreenActivity).get()
             if (user != null) {
-                if (user.isAdmin) {
+//                if (user.isAdmin == "true") {
                     IntentHelper.navigate(this@SplashScreenActivity, AdminMainActivity::class.java)
-                } else {
-                    IntentHelper.navigate(this@SplashScreenActivity, MainActivity::class.java)
-                }
-                finish()
+//                } else {
+//                    IntentHelper.navigate(this@SplashScreenActivity, MainActivity::class.java)
+//                }
+//                finish()
                 return@launch
             }
             IntentHelper.navigate(this@SplashScreenActivity, AuthActivity::class.java)
