@@ -528,6 +528,7 @@
                         android:textColor="@color/textThirdtinary"/>
 
                     <View
+                        android:id="@+id/lineAddComment"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="8dp"
@@ -550,6 +551,18 @@
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnChangeStatus"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:backgroundTint="@color/secondary"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Ubah Status"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="10dp"/>
 
         </LinearLayout>
 

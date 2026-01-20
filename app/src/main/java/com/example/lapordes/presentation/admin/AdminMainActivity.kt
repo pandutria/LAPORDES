@@ -67,6 +67,7 @@ class AdminMainActivity : AppCompatActivity() {
                 putString("status", complaint.status)
                 putString("note", complaint.note)
                 putLong("created_at", complaint.created_at!!.seconds * 1000)
+                putBoolean("isAdmin", true)
             }
             IntentHelper.navigate(this, ComplaintDetailActivity::class.java, bundle)
         }
@@ -90,7 +91,7 @@ class AdminMainActivity : AppCompatActivity() {
 
                     binding.tvTotalProses.text = state.data.count{x -> x.status == "Proses"}.toString()
                     binding.tvTotalBerhasil.text = state.data.count{x -> x.status == "Selesai"}.toString()
-                    binding.tvTotalDitolak.text = state.data.count{x -> x.status == "DiTolak"}.toString()
+                    binding.tvTotalDitolak.text = state.data.count{x -> x.status == "Ditolak"}.toString()
                     binding.tvTotalPengaduan.text = state.data.count().toString()
 
                     updatePieChart(state.data.count{x -> x.status == "Proses"}, state.data.count{x -> x.status == "Selesai"}, state.data.count{x -> x.status == "DiTolak"})
@@ -128,9 +129,9 @@ class AdminMainActivity : AppCompatActivity() {
                 listOf(Color.LTGRAY)
             } else {
                 listOf(
-                    Color.parseColor("#F57C00"), // Orange for Proses
-                    Color.parseColor("#388E3C"), // Green for Selesai
-                    Color.parseColor("#D32F2F")  // Red for Ditolak
+                    Color.parseColor("#F57C00"),
+                    Color.parseColor("#388E3C"),
+                    Color.parseColor("#D32F2F")
                 ).take(entries.size)
             }
 

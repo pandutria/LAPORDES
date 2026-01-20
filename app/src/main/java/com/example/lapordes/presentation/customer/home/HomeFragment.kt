@@ -43,6 +43,7 @@ class HomeFragment : Fragment() {
                 putString("status", complaint.status)
                 putString("note", complaint.note)
                 putLong("created_at", complaint.created_at!!.seconds * 1000)
+                putBoolean("isAdmin", false)
             }
 
             IntentHelper.navigate(requireActivity(), ComplaintDetailActivity::class.java, bundle)
@@ -88,9 +89,10 @@ class HomeFragment : Fragment() {
             }
         }
 
+
+
         return binding.root
     }
-
     override fun onResume() {
         super.onResume()
         viewModel.get(requireContext())

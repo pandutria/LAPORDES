@@ -89,4 +89,27 @@ class ComplaintRepository {
         listener?.remove()
         listener = null
     }
+
+    fun changeStatus(complaint_uid: String, status: String, note: String, callback: (ResultState<String>) -> Unit) {
+        callback(ResultState.Loading)
+
+        try {
+            val complaint = mapOf(
+                "status" to status,
+                "note" to note
+            )
+
+            firestore.collection("complaints")
+                .document(complaint_uid)
+                .update(complaint)
+                .addOnSuccessListener {
+                    callback(ResultState.Success("Status berhasil diubah"))
+                }
+                .addOnFailureListener {
+                    callback(ResultState.Success(it.message!!))
+                }
+        } catch (e: Exception) {
+            callback(ResultState.Error(e.message!!))
+        }
+    }
 }
