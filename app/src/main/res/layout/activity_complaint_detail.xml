@@ -99,38 +99,68 @@
                         android:alpha="0.1"
                         android:background="@color/textSecondary"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Nomor Pengaduan"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textSize="11sp"
-                        android:textColor="@color/textThirdtinary"/>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_number"
+                            android:layout_marginEnd="6dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nomor Pengaduan"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="11sp"
+                            android:textColor="@color/textThirdtinary"/>
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tvComplaintNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
+                        android:layout_marginStart="20dp"
                         android:text="ADU-2026-0001"
                         android:fontFamily="@font/poppins_semibold"
                         android:textSize="12sp"
                         android:textColor="@color/textSecondary"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Tanggal Dibuat"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textSize="11sp"
-                        android:textColor="@color/textThirdtinary"/>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_calendar"
+                            android:layout_marginEnd="6dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tanggal Dibuat"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="11sp"
+                            android:textColor="@color/textThirdtinary"/>
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tvCreatedDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
+                        android:layout_marginStart="20dp"
                         android:text="18 Januari 2026, 14:30"
                         android:fontFamily="@font/poppins_regular"
                         android:textSize="12sp"
@@ -164,7 +194,7 @@
                         <ImageView
                             android:layout_width="14dp"
                             android:layout_height="14dp"
-                            android:src="@drawable/ic_pencil"/>
+                            android:src="@drawable/ic_pencils"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -223,6 +253,13 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ic_category"
+                                    android:layout_marginEnd="6dp"/>
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -238,6 +275,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
+                                android:layout_marginStart="20dp"
                                 android:text="Infrastruktur"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:textSize="12sp"
@@ -257,6 +295,13 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ic_priority"
+                                    android:layout_marginEnd="6dp"/>
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -272,6 +317,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
+                                android:layout_marginStart="20dp"
                                 android:text="Tinggi"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:textSize="12sp"
@@ -305,6 +351,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_description"
+                            android:layout_marginEnd="8dp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -352,6 +404,12 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_location"
+                            android:layout_marginEnd="8dp"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -372,11 +430,11 @@
                         app:strokeColor="@color/textThirdtinary"
                         app:strokeWidth="1dp">
 
-<!--                        <fragment-->
-<!--                            android:id="@+id/mapFragment"-->
-<!--                            android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent" />-->
+                        <!--                        <fragment-->
+                        <!--                            android:id="@+id/mapFragment"-->
+                        <!--                            android:name="com.google.android.gms.maps.SupportMapFragment"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="match_parent" />-->
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -423,6 +481,12 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_camera"
+                            android:layout_marginEnd="8dp"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -457,7 +521,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:layout_marginBottom="15dp"
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
@@ -473,6 +536,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_comment"
+                            android:layout_marginEnd="8dp"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -547,6 +616,70 @@
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         app:cornerRadius="10dp"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAdminNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_admin_note"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Catatan Admin"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textSize="12sp"
+                            android:textColor="@color/textSecondary"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvAdminNote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Pengaduan telah diteruskan ke Dinas Pekerjaan Umum untuk penanganan. Estimasi perbaikan 7-14 hari kerja."
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="12sp"
+                        android:justificationMode="inter_word"
+                        android:lineSpacingExtra="2dp"
+                        android:textColor="@color/textSecondary"/>
+
+                    <TextView
+                        android:id="@+id/tvAdminNoteDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="Diperbarui: 19 Januari 2026, 10:15"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="10sp"
+                        android:textColor="@color/textThirdtinary"/>
 
                 </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.example.lapordes.data.repository
 import android.content.Context
 import com.example.lapordes.data.local.UserPref
 import com.example.lapordes.data.model.Complaint
+import com.example.lapordes.data.model.Notification
 import com.example.lapordes.data.state.ResultState
 import com.example.lapordes.utils.FirebaseHelper
 import com.google.firebase.firestore.FieldValue
@@ -96,7 +97,8 @@ class ComplaintRepository {
         try {
             val complaint = mapOf(
                 "status" to status,
-                "note" to note
+                "note" to note,
+                "updated_at" to FieldValue.serverTimestamp()
             )
 
             firestore.collection("complaints")

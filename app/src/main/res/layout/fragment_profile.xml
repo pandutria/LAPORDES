@@ -63,7 +63,7 @@
                         android:src="@drawable/empty_profile"/>
 
                     <TextView
-                        android:id="@+id/tvFullname"
+                        android:id="@+id/tvEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Pandu Adyatama"
@@ -79,6 +79,7 @@
                         android:layout_marginHorizontal="15dp"
                         android:layout_marginTop="30dp"
                         app:cardElevation="3dp"
+                        android:backgroundTint="@color/bg"
                         app:cardCornerRadius="10dp">
 
                         <LinearLayout
@@ -205,7 +206,7 @@
                         android:textSize="10sp"
                         android:layout_marginTop="2dp"
                         android:textColor="@color/textSecondary"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="30dp"
                         android:text="© LAPORDES Team and Developer. All rights Reversed"/>
 
                 </LinearLayout>

@@ -40,11 +40,11 @@ class SplashScreenActivity : AppCompatActivity() {
             delay(3000)
             val user = UserPref(this@SplashScreenActivity).get()
             if (user != null) {
-//                if (user.isAdmin == "true") {
+                if (user.admin) {
                     IntentHelper.navigate(this@SplashScreenActivity, AdminMainActivity::class.java)
-//                } else {
-//                    IntentHelper.navigate(this@SplashScreenActivity, MainActivity::class.java)
-//                }
+                } else {
+                    IntentHelper.navigate(this@SplashScreenActivity, MainActivity::class.java)
+                }
 //                finish()
                 return@launch
             }

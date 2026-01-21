@@ -9,10 +9,10 @@
     <item
         android:id="@+id/notificationMenu"
         android:title="Pemberitahuan"
-        android:icon="@drawable/ic_home"/>
+        android:icon="@drawable/ic_notification"/>
 
     <item
         android:id="@+id/profileMenu"
         android:title="Akun"
-        android:icon="@drawable/ic_home"/>
+        android:icon="@drawable/ic_profile"/>
 </menu>

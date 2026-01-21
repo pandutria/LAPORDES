@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.example.lapordes.data.model.Comment
 import com.example.lapordes.data.repository.CommentRepository
 import com.example.lapordes.data.repository.ComplaintRepository
+import com.example.lapordes.data.repository.NotificationRepository
 import com.example.lapordes.data.state.ResultState
 
 class ComplaintDetailViewModel: ViewModel() {
     private val commentRepository = CommentRepository()
     private val complaintRepository = ComplaintRepository()
+    private val notificationRepository = NotificationRepository()
 
     private val _createState = MutableLiveData<ResultState<String>>()
     val createState = _createState
@@ -20,6 +22,9 @@ class ComplaintDetailViewModel: ViewModel() {
 
     private val _updateState = MutableLiveData<ResultState<String>>()
     val updateState = _updateState
+
+    private val _createNotifState = MutableLiveData<ResultState<String>>()
+    val createNotifState = _createNotifState
 
     fun create(
         comment: String,
@@ -40,6 +45,12 @@ class ComplaintDetailViewModel: ViewModel() {
     fun updateStatus(complaint_uid: String, status: String, note: String) {
         complaintRepository.changeStatus(complaint_uid, status, note) {
             _updateState.postValue(it)
+        }
+    }
+
+    fun createNotif(complaint_uid: String, user_uid: String) {
+        notificationRepository.createNotif(complaint_uid, user_uid) {
+            _createNotifState.postValue(it)
         }
     }
 }

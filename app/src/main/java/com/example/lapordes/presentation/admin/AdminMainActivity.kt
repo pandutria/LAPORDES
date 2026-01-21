@@ -2,6 +2,7 @@ package com.example.lapordes.presentation.admin
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -66,8 +67,11 @@ class AdminMainActivity : AppCompatActivity() {
                 putDouble("lng", complaint.lng)
                 putString("status", complaint.status)
                 putString("note", complaint.note)
+                putString("user_uid", complaint.user.uid)
+                Log.d("user_debug", complaint.user.uid)
                 putLong("created_at", complaint.created_at!!.seconds * 1000)
-                putBoolean("isAdmin", true)
+                putLong("updated_at", complaint.updated_at!!.seconds * 1000)
+                putBoolean("admin", true)
             }
             IntentHelper.navigate(this, ComplaintDetailActivity::class.java, bundle)
         }

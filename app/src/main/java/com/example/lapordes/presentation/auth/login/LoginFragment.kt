@@ -54,7 +54,7 @@ class LoginFragment : Fragment() {
                 }
                 is ResultState.Success -> {
                     UserPref(requireContext()).save(state.data)
-                    if (state.data.isAdmin == "true") {
+                    if (state.data.admin) {
                         IntentHelper.navigate(requireActivity(), AdminMainActivity::class.java)
                     } else {
                         IntentHelper.navigate(requireActivity(), MainActivity::class.java)

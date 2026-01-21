@@ -27,8 +27,8 @@ class AuthRepository {
                         "uid" to uid,
                         "email" to email,
                         "password" to password,
-                        "isAdmin" to "false",
-                        "createdAt" to FieldValue.serverTimestamp()
+                        "admin" to false,
+                        "created_at" to FieldValue.serverTimestamp()
                     )
 
                     firestore.collection("users")

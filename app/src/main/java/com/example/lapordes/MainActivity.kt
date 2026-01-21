@@ -39,9 +39,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
-        insetsController.isAppearanceLightStatusBars = true
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
 
@@ -50,9 +47,22 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavbar.selectedItemId = R.id.homeMenu
 
         binding.bottomNavbar.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.homeMenu -> {
+                    navController.navigate(R.id.homeScreen)
+                }
+                R.id.notificationMenu -> {
+                    navController.navigate(R.id.notificationScreen)
+                }
+                R.id.profileMenu -> {
+                    navController.navigate(R.id.profileScreen)
+                }
+            }
+
             moveIndicatorTo(item.itemId)
             true
         }
+
 
         binding.bottomNavbar.doOnLayout {
             moveIndicatorTo(binding.bottomNavbar.selectedItemId)

@@ -24,6 +24,7 @@ import java.util.Date
 import java.util.Locale
 
 class ComplaintDetailActivity : AppCompatActivity() {
+
     private var _binding: ActivityComplaintDetailBinding? = null
     private val binding get() = _binding!!
 
@@ -31,18 +32,23 @@ class ComplaintDetailActivity : AppCompatActivity() {
     private lateinit var adapter: CommentAdapter
 
     private var isAdmin: Boolean = false
+    private var user_uid: String? = null
+    private var currentStatus: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         _binding = ActivityComplaintDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         viewModel = ViewModelProvider(this)[ComplaintDetailViewModel::class.java]
+
         val insetsController = WindowInsetsControllerCompat(window, window.decorView)
         insetsController.isAppearanceLightStatusBars = false
         window.statusBarColor = getColor(R.color.secondary)
@@ -52,16 +58,23 @@ class ComplaintDetailActivity : AppCompatActivity() {
         }
 
         val uid = intent.getStringExtra("uid")
+        if (uid.isNullOrEmpty()) {
+            ToastHelper.showToast(this, "Data pengaduan tidak valid")
+            finish()
+            return
+        }
+
         val title = intent.getStringExtra("title")
         val category = intent.getStringExtra("category")
         val priority = intent.getStringExtra("priority")
         val description = intent.getStringExtra("desc")
         val imageUrl = intent.getStringExtra("imageUrl")
-        val lat = intent.getDoubleExtra("lat", 0.0)
-        val lng = intent.getDoubleExtra("lng", 0.0)
         val status = intent.getStringExtra("status")
         val note = intent.getStringExtra("note")
-        isAdmin = intent.getBooleanExtra("isAdmin", false)
+
+        user_uid = intent.getStringExtra("user_uid")
+        isAdmin = intent.getBooleanExtra("admin", false)
+        currentStatus = status
 
         binding.tvTitle.text = title
         binding.tvStatus.text = status
@@ -69,17 +82,24 @@ class ComplaintDetailActivity : AppCompatActivity() {
         binding.tvCategory.text = category
         binding.tvDescription.text = description
         binding.tvComplaintNumber.text = uid
+        binding.tvAdminNote.text = if (note.isNullOrEmpty()) "-" else note
 
         val createdMillis = intent.getLongExtra("created_at", 0L)
-        val date = Date(createdMillis)
+        val updatedMillis = intent.getLongExtra("updated_at", 0L)
 
         val localeID = Locale("id", "ID")
         val sdf = SimpleDateFormat("EEEE, dd MMMM yyyy", localeID)
-        binding.tvCreatedDate.text = sdf.format(date)
 
-        if (status == "Proses") binding.tvStatus.setBackgroundResource(R.drawable.bg_status_process)
-        if (status == "Selesai") binding.tvStatus.setBackgroundResource(R.drawable.bg_status_approved)
-        if (status == "Ditolak") binding.tvStatus.setBackgroundResource(R.drawable.bg_status_rejected)
+        binding.tvCreatedDate.text = sdf.format(Date(createdMillis))
+        binding.tvAdminNoteDate.text =
+            if (!note.isNullOrEmpty()) "Diperbarui: ${sdf.format(Date(updatedMillis))}"
+            else "Diperbarui: -"
+
+        when (status) {
+            "Proses" -> binding.tvStatus.setBackgroundResource(R.drawable.bg_status_process)
+            "Selesai" -> binding.tvStatus.setBackgroundResource(R.drawable.bg_status_approved)
+            "Ditolak" -> binding.tvStatus.setBackgroundResource(R.drawable.bg_status_rejected)
+        }
 
         Glide.with(this)
             .load(imageUrl)
@@ -87,8 +107,6 @@ class ComplaintDetailActivity : AppCompatActivity() {
 
         val dialogComment = BottomSheetDialog(this)
         val dialogCommentBinding = DialogAddCommentBinding.inflate(layoutInflater)
-
-
 
         binding.btnAddComment.setOnClickListener {
             dialogComment.setContentView(dialogCommentBinding.root)
@@ -98,51 +116,36 @@ class ComplaintDetailActivity : AppCompatActivity() {
             }
 
             dialogCommentBinding.btnSubmit.setOnClickListener {
-                val commentText = dialogCommentBinding.etComment.text.toString()
-
-                if (commentText.isEmpty()) {
+                val comment = dialogCommentBinding.etComment.text.toString()
+                if (comment.isEmpty()) {
                     ToastHelper.showToast(this, "Komentar tidak boleh kosong")
                     return@setOnClickListener
                 }
 
-                val comment = dialogCommentBinding.etComment.text.toString()
-                viewModel.create(comment, uid!!, this)
+                viewModel.create(comment, uid, this)
                 dialogComment.dismiss()
             }
 
             dialogComment.show()
         }
 
-        viewModel.createState.observe(this){ state ->
+        viewModel.createState.observe(this) { state ->
             when (state) {
-                is ResultState.Loading -> {
-                    dialogComment.dismiss()
-                }
-                is ResultState.Success -> {
-                    dialogComment.dismiss()
-                    ToastHelper.showToast(this, "Berhasil")
-                }
-                is ResultState.Error -> {
-                    dialogComment.dismiss()
+                is ResultState.Success ->
+                    ToastHelper.showToast(this, "Komentar berhasil ditambahkan")
+                is ResultState.Error ->
                     ToastHelper.showToast(this, state.message)
-                }
+                else -> {}
             }
         }
-
 
         val dialogStatus = BottomSheetDialog(this)
         val dialogStatusBinding = DialogChangeStatusBinding.inflate(layoutInflater)
 
-        val statusList = listOf(
-            "Proses",
-            "Selesai",
-            "Ditolak"
-        )
-
         val statusAdapter = ArrayAdapter(
             this,
             R.layout.item_spinner_selected,
-            statusList
+            listOf("Proses", "Selesai", "Ditolak")
         ).apply {
             setDropDownViewResource(R.layout.item_spinner_dropdown)
         }
@@ -157,9 +160,19 @@ class ComplaintDetailActivity : AppCompatActivity() {
             }
 
             dialogStatusBinding.btnSubmit.setOnClickListener {
+                val selectedStatus =
+                    dialogStatusBinding.spinnerStatus.selectedItem.toString()
+
+                if (selectedStatus == currentStatus) {
+                    ToastHelper.showToast(this, "Status belum berubah")
+                    return@setOnClickListener
+                }
+
+                dialogStatus.dismiss()
+
                 viewModel.updateStatus(
-                    uid!!,
-                    dialogStatusBinding.spinnerStatus.selectedItem.toString(),
+                    uid,
+                    selectedStatus,
                     dialogStatusBinding.etNote.text.toString()
                 )
             }
@@ -167,39 +180,41 @@ class ComplaintDetailActivity : AppCompatActivity() {
             dialogStatus.show()
         }
 
-        viewModel.updateState.observe(this){state ->
-            when(state) {
+        viewModel.updateState.observe(this) { state ->
+            when (state) {
                 is ResultState.Loading -> {
-                    dialogComment.dismiss()
+                    binding.btnChangeStatus.isEnabled = false
                 }
+
                 is ResultState.Success -> {
-                    dialogComment.dismiss()
-                    ToastHelper.showToast(this, "Berhasil")
+                    binding.btnChangeStatus.isEnabled = true
+
+                    if (!user_uid.isNullOrEmpty()) {
+                        viewModel.createNotif(uid, user_uid!!)
+                    }
+
+                    ToastHelper.showToast(this, "Status berhasil diperbarui")
                     IntentHelper.finish(this)
                 }
+
                 is ResultState.Error -> {
-                    dialogComment.dismiss()
+                    binding.btnChangeStatus.isEnabled = true
                     ToastHelper.showToast(this, state.message)
                 }
             }
         }
 
-
         adapter = CommentAdapter()
-        viewModel.get(uid!!)
-        viewModel.getState.observe(this){state ->
-            when(state) {
-                is ResultState.Loading -> {
+        viewModel.get(uid)
 
-                }
+        viewModel.getState.observe(this) { state ->
+            when (state) {
                 is ResultState.Success -> {
                     adapter.setData(state.data)
                     binding.rvComments.adapter = adapter
-                    binding.tvCommentCount.text = state.data.count().toString()
+                    binding.tvCommentCount.text = state.data.size.toString()
                 }
-                is ResultState.Error -> {
-
-                }
+                else -> {}
             }
         }
 

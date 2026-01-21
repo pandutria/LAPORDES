@@ -1,10 +1,13 @@
 package com.example.lapordes.presentation.customer.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.lapordes.R
 import com.example.lapordes.data.model.Complaint
@@ -30,6 +33,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
+        val insetsController = WindowInsetsControllerCompat(requireActivity().window, requireActivity().window.decorView)
+        insetsController.isAppearanceLightStatusBars = true
+        requireActivity().window.statusBarColor = getColor(requireContext(), R.color.white)
+
         adapter = ComplaintAdapter{ complaint ->
             val bundle = Bundle().apply {
                 putString("uid", complaint.uid)
@@ -42,8 +49,11 @@ class HomeFragment : Fragment() {
                 putDouble("lng", complaint.lng)
                 putString("status", complaint.status)
                 putString("note", complaint.note)
+                putString("user_uid", complaint.user.uid)
+                Log.d("user_debug", complaint.user.uid)
                 putLong("created_at", complaint.created_at!!.seconds * 1000)
-                putBoolean("isAdmin", false)
+                putLong("created_at", complaint.updated_at!!.seconds * 1000)
+                putBoolean("admin", false)
             }
 
             IntentHelper.navigate(requireActivity(), ComplaintDetailActivity::class.java, bundle)

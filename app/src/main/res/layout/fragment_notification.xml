@@ -1,14 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.customer.notification.NotificationFragment">
+    android:background="@color/bg">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_header"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Pesan Saya"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_below="@id/header"
+        android:background="@color/bg"
+        android:fillViewport="true">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/pbLoading"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/primary"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/contentLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="15dp"
+                    android:paddingTop="15dp">
+
+<!--                    &lt;!&ndash; Filter Tabs &ndash;&gt;-->
+<!--                    <com.google.android.material.card.MaterialCardView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:backgroundTint="@color/white"-->
+<!--                        app:cardCornerRadius="12dp"-->
+<!--                        app:cardElevation="2dp">-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:paddingVertical="4dp"-->
+<!--                            android:paddingHorizontal="10dp">-->
+
+<!--                            <com.google.android.material.button.MaterialButton-->
+<!--                                android:id="@+id/btnFilterAll"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="40dp"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:layout_marginEnd="4dp"-->
+<!--                                android:backgroundTint="@color/secondary"-->
+<!--                                android:fontFamily="@font/poppins_semibold"-->
+<!--                                android:text="Semua"-->
+<!--                                android:textAllCaps="false"-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textSize="11sp"-->
+<!--                                app:cornerRadius="8dp" />-->
+
+<!--                            <com.google.android.material.button.MaterialButton-->
+<!--                                android:id="@+id/btnFilterUnread"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="40dp"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:layout_marginHorizontal="4dp"-->
+<!--                                android:backgroundTint="@color/bg"-->
+<!--                                android:fontFamily="@font/poppins_medium"-->
+<!--                                android:text="Belum Dibaca"-->
+<!--                                android:textAllCaps="false"-->
+<!--                                android:textColor="@color/textSecondary"-->
+<!--                                android:textSize="11sp"-->
+<!--                                app:cornerRadius="8dp" />-->
+
+<!--                            <com.google.android.material.button.MaterialButton-->
+<!--                                android:id="@+id/btnFilterRead"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="40dp"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:layout_marginStart="4dp"-->
+<!--                                android:backgroundTint="@color/bg"-->
+<!--                                android:fontFamily="@font/poppins_medium"-->
+<!--                                android:text="Sudah Dibaca"-->
+<!--                                android:textAllCaps="false"-->
+<!--                                android:textColor="@color/textSecondary"-->
+<!--                                android:textSize="11sp"-->
+<!--                                app:cornerRadius="8dp" />-->
+
+<!--                        </LinearLayout>-->
+
+<!--                    </com.google.android.material.card.MaterialCardView>-->
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvMessages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="15dp"
+                        android:overScrollMode="never"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_message" />
+
+                    <LinearLayout
+                        android:id="@+id/emptyState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="80dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:alpha="0.3"
+                            android:src="@drawable/ic_empty_message" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Belum Ada Pesan"
+                            android:textColor="@color/textSecondary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Notifikasi update pengaduan\nakan muncul di sini"
+                            android:textAlignment="center"
+                            android:textColor="@color/textThirdtinary"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>
