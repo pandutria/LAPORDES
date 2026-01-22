@@ -2,4 +2,5 @@
     <string name="app_name">LAPORDES</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_web_client_id">114629494014-p3pkirv4cdk0omnq1up61u5ttuic2t5i.apps.googleusercontent.com</string>
 </resources>
