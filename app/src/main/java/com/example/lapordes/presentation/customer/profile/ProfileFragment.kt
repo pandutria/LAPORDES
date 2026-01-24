@@ -11,6 +11,7 @@ import com.example.lapordes.R
 import com.example.lapordes.data.local.UserPref
 import com.example.lapordes.databinding.FragmentProfileBinding
 import com.example.lapordes.presentation.auth.AuthActivity
+import com.example.lapordes.presentation.customer.profile.update.ProfileUpdateActivity
 import com.example.lapordes.utils.IntentHelper
 
 class ProfileFragment : Fragment() {
@@ -37,6 +38,15 @@ class ProfileFragment : Fragment() {
             requireActivity().finishAffinity()
         }
 
+        binding.layoutUpdate.setOnClickListener {
+            IntentHelper.navigate(requireActivity(), ProfileUpdateActivity::class.java)
+        }
+
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.tvEmail.text = UserPref(requireContext()).get()!!.email
     }
 }
