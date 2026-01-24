@@ -20,6 +20,7 @@ import com.cloudinary.android.callback.UploadCallback
 import com.example.lapordes.R
 import com.example.lapordes.data.state.ResultState
 import com.example.lapordes.databinding.ActivityComplaintBinding
+import com.example.lapordes.presentation.customer.map.SelectMapActivity
 import com.example.lapordes.utils.IntentHelper
 import com.example.lapordes.utils.ToastHelper
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -98,8 +99,17 @@ class ComplaintActivity : AppCompatActivity() {
         binding.emptyImageState.setOnClickListener {
             openImagePicker()
         }
+
         binding.imageContainer.setOnClickListener {
             openImagePicker()
+        }
+
+        binding.emptyLocationState.setOnClickListener {
+            val bundle = Bundle().apply {
+                putDouble("lat", myLat!!)
+                putDouble("lng", myLng!!)
+            }
+            IntentHelper.navigate(this, SelectMapActivity::class.java, bundle)
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)

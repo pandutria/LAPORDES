@@ -1,12 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg">
 
-    <WebView
-        android:id="@+id/webView"
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_header"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/bg_btn_back"
+            android:padding="8dp"
+            android:src="@drawable/btn_back" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Pilih Lokasi"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</FrameLayout>
+    <FrameLayout
+        android:id="@+id/layoutBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSend"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginHorizontal="15dp"
+            android:backgroundTint="@color/secondary"
+            android:fontFamily="@font/poppins_semibold"
+            android:letterSpacing="0.02"
+            android:text="Pilih Lokasi"
+            android:layout_marginVertical="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            android:textSize="12sp"
+            app:cornerRadius="12dp"
+            app:elevation="4dp" />
+
+        <ProgressBar
+            android:id="@+id/pbLoading"
+            android:layout_width="30dp"
+            android:layout_height="55dp"
+            android:layout_marginVertical="10dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="@color/secondary" />
+
+    </FrameLayout>
+
+</RelativeLayout>
