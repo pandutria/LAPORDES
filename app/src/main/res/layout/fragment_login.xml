@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="80dp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -235,6 +235,7 @@
 
                 <!-- Divider dengan teks "atau" -->
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -268,6 +269,7 @@
 
                 <!-- Tombol Login dengan Google -->
                 <com.google.android.material.button.MaterialButton
+                    android:visibility="gone"
                     android:id="@+id/btnGoogleLogin"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"

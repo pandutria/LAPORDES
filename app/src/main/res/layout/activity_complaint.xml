@@ -12,8 +12,8 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:clipToOutline="true"
         android:background="@drawable/bg_header"
+        android:clipToOutline="true"
         android:elevation="4dp">
 
         <TextView
@@ -332,17 +332,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
 
-
-<!--                <fragment-->
-<!--                    android:id="@+id/mapFragment"-->
-<!--                    android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent" />-->
-
+                <fragment
+                    android:id="@+id/mapFragment"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -352,7 +349,7 @@
                 android:layout_height="200dp"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@color/white"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
@@ -392,6 +389,24 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSelectMap"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/secondary"
+                android:fontFamily="@font/poppins_medium"
+                android:letterSpacing="0.02"
+                android:text="Pilih Lokasi di Peta"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_select_location"
+                app:iconGravity="textStart"
+                app:iconPadding="6dp"
+                app:iconTint="@color/white" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -423,7 +438,8 @@
                 <ImageView
                     android:id="@+id/imgImage"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
 
 
             </com.google.android.material.card.MaterialCardView>
@@ -465,7 +481,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="Tap layout ini untuk memilih foto"
+                        android:text="Tap tombol ini untuk memilih foto"
                         android:textAlignment="center"
                         android:textColor="@color/textThirdtinary"
                         android:textSize="11sp" />
@@ -473,6 +489,25 @@
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- Button Select Image -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSelectImage"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/secondary"
+                android:fontFamily="@font/poppins_medium"
+                android:letterSpacing="0.02"
+                android:text="Pilih Foto"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_select_image"
+                app:iconGravity="textStart"
+                app:iconPadding="6dp"
+                app:iconTint="@color/white" />
 
         </LinearLayout>
 
@@ -483,23 +518,23 @@
         android:id="@+id/layoutBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="5dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:elevation="5dp">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSend"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="10dp"
             android:backgroundTint="@color/secondary"
             android:fontFamily="@font/poppins_semibold"
             android:letterSpacing="0.02"
             android:text="Kirim Pengaduan"
-            android:layout_marginVertical="10dp"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:visibility="visible"
             android:textSize="12sp"
+            android:visibility="visible"
             app:cornerRadius="12dp"
             app:elevation="4dp" />
 
@@ -507,10 +542,10 @@
             android:id="@+id/pbLoading"
             android:layout_width="30dp"
             android:layout_height="55dp"
-            android:layout_marginVertical="10dp"
             android:layout_gravity="center"
-            android:visibility="gone"
-            android:indeterminateTint="@color/secondary" />
+            android:layout_marginVertical="10dp"
+            android:indeterminateTint="@color/secondary"
+            android:visibility="gone" />
 
     </FrameLayout>
 

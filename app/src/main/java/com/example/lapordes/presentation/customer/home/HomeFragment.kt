@@ -81,7 +81,7 @@ class HomeFragment : Fragment() {
 
                     binding.tvTotalProses.text = state.data.count{x -> x.status == "Proses"}.toString()
                     binding.tvTotalBerhasil.text = state.data.count{x -> x.status == "Selesai"}.toString()
-                    binding.tvTotalDitolak.text = state.data.count{x -> x.status == "DiTolak"}.toString()
+                    binding.tvTotalDitolak.text = state.data.count{x -> x.status == "Ditolak"}.toString()
                     binding.tvTotalPengaduan.text = state.data.count().toString()
 
                     binding.pbLoading.visibility = View.GONE

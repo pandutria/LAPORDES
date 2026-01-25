@@ -18,12 +18,18 @@ import com.example.lapordes.databinding.DialogChangeStatusBinding
 import com.example.lapordes.presentation.adapter.CommentAdapter
 import com.example.lapordes.utils.IntentHelper
 import com.example.lapordes.utils.ToastHelper
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class ComplaintDetailActivity : AppCompatActivity() {
+class ComplaintDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var _binding: ActivityComplaintDetailBinding? = null
     private val binding get() = _binding!!
@@ -34,6 +40,11 @@ class ComplaintDetailActivity : AppCompatActivity() {
     private var isAdmin: Boolean = false
     private var user_uid: String? = null
     private var currentStatus: String? = null
+
+    private lateinit var mMap: GoogleMap
+
+    private var myLat: Double? = null
+    private var myLng: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +82,8 @@ class ComplaintDetailActivity : AppCompatActivity() {
         val imageUrl = intent.getStringExtra("imageUrl")
         val status = intent.getStringExtra("status")
         val note = intent.getStringExtra("note")
+        myLat = intent.getDoubleExtra("lat", 0.0)
+        myLng = intent.getDoubleExtra("lng", 0.0)
 
         user_uid = intent.getStringExtra("user_uid")
         isAdmin = intent.getBooleanExtra("admin", false)
@@ -100,6 +113,10 @@ class ComplaintDetailActivity : AppCompatActivity() {
             "Selesai" -> binding.tvStatus.setBackgroundResource(R.drawable.bg_status_approved)
             "Ditolak" -> binding.tvStatus.setBackgroundResource(R.drawable.bg_status_rejected)
         }
+
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
         Glide.with(this)
             .load(imageUrl)
@@ -219,6 +236,26 @@ class ComplaintDetailActivity : AppCompatActivity() {
         }
 
         showView()
+    }
+
+    private fun updateMapLocation(lat: Double, lng: Double) {
+        val location = LatLng(lat, lng)
+
+        mMap.clear()
+        mMap.addMarker(
+            MarkerOptions()
+                .position(location)
+                .title("Lokasi Pengaduan")
+        )
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16f))
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        if (myLat != null && myLng != null) {
+            updateMapLocation(myLat!!, myLng!!)
+        }
     }
 
     private fun showView() {

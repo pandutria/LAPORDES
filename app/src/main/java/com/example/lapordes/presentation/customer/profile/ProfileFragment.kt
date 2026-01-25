@@ -29,7 +29,7 @@ class ProfileFragment : Fragment() {
 
         binding.tvEmail.text = UserPref(requireContext()).get()!!.email
 
-        binding.layoutExit.setOnClickListener {
+        binding.layoutLogout.setOnClickListener {
             IntentHelper.navigate(requireActivity(), AuthActivity::class.java)
             IntentHelper.finish(requireActivity())
         }

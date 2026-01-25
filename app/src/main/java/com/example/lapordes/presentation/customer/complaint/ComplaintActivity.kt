@@ -25,33 +25,50 @@ import com.example.lapordes.utils.IntentHelper
 import com.example.lapordes.utils.ToastHelper
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import java.io.File
 import java.io.FileOutputStream
 
-class ComplaintActivity : AppCompatActivity() {
+class ComplaintActivity : AppCompatActivity(), OnMapReadyCallback {
+
     private var _binding: ActivityComplaintBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var mMap: GoogleMap
+    private var isMapReady: Boolean = false
 
     private lateinit var viewModel: ComplaintViewModel
 
     private var imageUri: String? = null
     private var imageUrl: String? = null
+
     private var myLat: Double? = null
     private var myLng: Double? = null
+
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var selectMapLauncher: ActivityResultLauncher<Intent>
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         _binding = ActivityComplaintBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         viewModel = ViewModelProvider(this)[ComplaintViewModel::class.java]
 
         val insetsController = WindowInsetsControllerCompat(window, window.decorView)
@@ -61,55 +78,67 @@ class ComplaintActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             IntentHelper.finish(this)
         }
+
         showDataSpinner()
 
         pickImageLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK && result.data != null) {
-                    val uri = result.data?.data
-                    if (uri != null) {
-                        contentResolver.takePersistableUriPermission(
-                            uri,
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        )
+                    val uri = result.data?.data ?: return@registerForActivityResult
 
-                        imageUri = uri.toString()
-                        Glide.with(this)
-                            .load(imageUri)
-                            .into(binding.imgImage)
+                    contentResolver.takePersistableUriPermission(
+                        uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
 
-                        binding.emptyImageState.visibility = View.GONE
-                        binding.imageContainer.visibility = View.VISIBLE
-                    }
+                    imageUri = uri.toString()
+
+                    Glide.with(this)
+                        .load(imageUri)
+                        .into(binding.imgImage)
+
+                    binding.emptyImageState.visibility = View.GONE
+                    binding.imageContainer.visibility = View.VISIBLE
                 }
             }
 
         requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
                 if (isGranted) {
-//                    openImagePicker()
                     getCurrentLocation()
-                }
-                else {
+                } else {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                     IntentHelper.finish(this)
                 }
             }
 
-        binding.emptyImageState.setOnClickListener {
-            openImagePicker()
-        }
+        selectMapLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK && result.data != null) {
 
-        binding.imageContainer.setOnClickListener {
-            openImagePicker()
-        }
+                    val lat = result.data!!.getDoubleExtra("lat", 0.0)
+                    val lng = result.data!!.getDoubleExtra("lng", 0.0)
 
-        binding.emptyLocationState.setOnClickListener {
-            val bundle = Bundle().apply {
-                putDouble("lat", myLat!!)
-                putDouble("lng", myLng!!)
+                    myLat = lat
+                    myLng = lng
+
+                    if (isMapReady) {
+                        updateMapLocation(lat, lng)
+                    }
+                }
+                // RESULT_CANCELED → tidak mengubah lokasi
             }
-            IntentHelper.navigate(this, SelectMapActivity::class.java, bundle)
+
+        binding.btnSelectImage.setOnClickListener {
+            openImagePicker()
+        }
+
+        binding.btnSelectMap.setOnClickListener {
+            val intent = Intent(this, SelectMapActivity::class.java).apply {
+                putExtra("lat", myLat!!)
+                putExtra("lng", myLng!!)
+            }
+            selectMapLauncher.launch(intent)
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -123,26 +152,52 @@ class ComplaintActivity : AppCompatActivity() {
             uploadImage(imageUri!!)
         }
 
-        viewModel.createState.observe(this){state ->
-            when(state) {
+        viewModel.createState.observe(this) { state ->
+            when (state) {
                 is ResultState.Loading -> {
                     binding.pbLoading.visibility = View.VISIBLE
                     binding.btnSend.visibility = View.GONE
                     binding.btnBack.isEnabled = false
                 }
+
                 is ResultState.Success -> {
                     ToastHelper.showToast(this, "Berhasil membuat pengaduan!")
                     IntentHelper.finish(this)
                 }
+
                 is ResultState.Error -> {
                     binding.pbLoading.visibility = View.GONE
                     binding.btnSend.visibility = View.VISIBLE
                     binding.btnBack.isEnabled = true
-
                     ToastHelper.showToast(this, state.message)
                 }
             }
         }
+
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        isMapReady = true
+
+        if (myLat != null && myLng != null) {
+            updateMapLocation(myLat!!, myLng!!)
+        }
+    }
+
+    private fun updateMapLocation(lat: Double, lng: Double) {
+        val location = LatLng(lat, lng)
+
+        mMap.clear()
+        mMap.addMarker(
+            MarkerOptions()
+                .position(location)
+                .title("Lokasi Terpilih")
+        )
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16f))
     }
 
     private fun getCurrentLocation() {
@@ -150,9 +205,7 @@ class ComplaintActivity : AppCompatActivity() {
             checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
             != android.content.pm.PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissionLauncher.launch(
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            )
+            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
             return
         }
 
@@ -161,10 +214,20 @@ class ComplaintActivity : AppCompatActivity() {
                 if (location != null) {
                     myLat = location.latitude
                     myLng = location.longitude
+
+                    if (isMapReady) {
+                        updateMapLocation(myLat!!, myLng!!)
+                    }
                 } else {
                     Toast.makeText(this, "Lokasi tidak tersedia", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun openImagePicker() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        pickImageLauncher.launch(intent)
     }
 
     private fun uriToFile(uri: Uri): File {
@@ -182,41 +245,21 @@ class ComplaintActivity : AppCompatActivity() {
         return file
     }
 
-    private fun openImagePicker() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
-        pickImageLauncher.launch(intent)
-    }
-
     private fun showDataSpinner() {
-        val kategoriList = listOf(
-            "Infrastruktur",
-            "Keamanan",
-            "Kebersihan",
-            "Bencana Alam"
-        )
-
         val kategoriAdapter = ArrayAdapter(
             this,
             R.layout.item_spinner_selected,
-            kategoriList
+            listOf("Infrastruktur", "Keamanan", "Kebersihan", "Bencana Alam")
         ).apply {
             setDropDownViewResource(R.layout.item_spinner_dropdown)
         }
 
         binding.spinnerKategori.adapter = kategoriAdapter
 
-        val priorityList = listOf(
-            "Rendah",
-            "Sedang",
-            "Tinggi",
-            "Darurat"
-        )
-
         val priorityAdapter = ArrayAdapter(
             this,
             R.layout.item_spinner_selected,
-            priorityList
+            listOf("Rendah", "Sedang", "Tinggi", "Darurat")
         ).apply {
             setDropDownViewResource(R.layout.item_spinner_dropdown)
         }
@@ -227,6 +270,7 @@ class ComplaintActivity : AppCompatActivity() {
     private fun uploadImage(uriString: String) {
         val uri = Uri.parse(uriString)
         val file = uriToFile(uri)
+
         MediaManager.get().upload(file.absolutePath)
             .unsigned("outgamble")
             .callback(object : UploadCallback {
@@ -237,47 +281,30 @@ class ComplaintActivity : AppCompatActivity() {
                     binding.btnBack.isEnabled = false
                 }
 
-                override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
-                    binding.pbLoading.visibility = View.VISIBLE
-                    binding.btnSend.visibility = View.GONE
-                    binding.btnBack.isEnabled = false
-                }
+                override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {}
 
-                override fun onSuccess(
-                    requestId: String,
-                    resultData: Map<*, *>
-                ) {
+                override fun onSuccess(requestId: String, resultData: Map<*, *>) {
                     val url = resultData["secure_url"] as String
-                    imageUrl = url
 
-                    val title = binding.etTitle.text.toString()
-                    val category = binding.spinnerKategori.selectedItem.toString()
-                    val priority = binding.spinnerPriority.selectedItem.toString()
-                    val desc = binding.etDesc.text.toString()
-                    val lat = myLat
-                    val lng = myLng
-
-                    viewModel.create(title, category, priority, desc, url, lat!!, lng!!, this@ComplaintActivity)
+                    viewModel.create(
+                        binding.etTitle.text.toString(),
+                        binding.spinnerKategori.selectedItem.toString(),
+                        binding.spinnerPriority.selectedItem.toString(),
+                        binding.etDesc.text.toString(),
+                        url,
+                        myLat!!,
+                        myLng!!,
+                        this@ComplaintActivity
+                    )
                 }
 
-                override fun onError(
-                    requestId: String,
-                    error: com.cloudinary.android.callback.ErrorInfo
-                ) {
-                    error(error.description)
-                    binding.pbLoading.visibility = View.GONE
-                    binding.btnSend.visibility = View.VISIBLE
-                    binding.btnBack.isEnabled = true
+                override fun onError(requestId: String, error: com.cloudinary.android.callback.ErrorInfo) {
+                    ToastHelper.showToast(this@ComplaintActivity, error.description)
                 }
 
                 override fun onReschedule(requestId: String, error: com.cloudinary.android.callback.ErrorInfo) {}
             })
             .dispatch()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        IntentHelper.finish(this)
     }
 
     override fun onDestroy() {
